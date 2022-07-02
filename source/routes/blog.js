@@ -1,15 +1,21 @@
-const express = require("express");
-const blogController = require("../controllers/blog");
+import express from "express";
+import {
+  blog_index,
+  blog_details,
+  blog_create_get,
+  blog_create_post,
+  blog_delete,
+} from "../controllers/blog.js";
 
 const router = express.Router();
 
-router.get("/", blogController.blog_index);
-router.get("/create", blogController.blog_create_get);
-router.post("/", blogController.blog_create_post);
-router.get("/:id", blogController.blog_details);
-router.delete("/:id", blogController.blog_delete);
+router.get("/", blog_index);
+router.get("/create", blog_create_get);
+router.post("/", blog_create_post);
+router.get("/:id", blog_details);
+router.delete("/:id", blog_delete);
 
-module.exports = router;
+export default router;
 
 // mongoose and mongo sandbox routes for practise
 router.get("/add-blog", (req, res) => {

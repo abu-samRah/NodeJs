@@ -1,20 +1,24 @@
-const express = require("express");
-const morgan = require("morgan");
-const mongoose = require("mongoose");
-const blogRouts = require("./routes/blog");
+import express from "express";
+import path from "path";
+import morgan from "morgan";
+import blogRouts from "./routes/blog.js";
+import dotenv from "dotenv";
+import { connectToDB } from "./utils/index.js";
 
 const app = express();
 
+// configuring our env
+dotenv.config();
+
 // connect to mongodb
-const dbURI =
-  "mongodb+srv://Abdallah:EUGRypXWhkh6C2sZ@nodehero.lwlvq.mongodb.net/Node_hero?retryWrites=true&w=majority";
-mongoose
-  .connect(dbURI)
-  .then((results) => app.listen(3000))
+connectToDB()
+  .then(app.listen(3000))
   .catch((err) => console.log(err));
 
 // register view engine
+const __dirname = path.resolve();
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "/source/views"));
 
 // for logging request details
 app.use(morgan("dev"));

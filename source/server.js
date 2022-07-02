@@ -1,4 +1,4 @@
-const http = require("http");
+/*const http = require("http");
 const fs = require("fs");
 
 const server = http.createServer((req, res) => {
@@ -47,3 +47,4 @@ const read = (path, res) => {
 server.listen(3000, "localhost", () => {
   console.log("listening for requests");
 });
+*/
