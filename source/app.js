@@ -4,6 +4,7 @@ import morgan from "morgan";
 import blogRouts from "./routes/blog.js";
 import authRouts from "./routes/authentication.js";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import { connectToDB } from "./utils/index.js";
 
 const app = express();
@@ -30,6 +31,7 @@ app.use(express.static("public"));
 // takes all the url encoded data and pass it to the req.body so we can use it
 app.use(express.urlencoded({ urlencoded: true, extended: false }));
 app.use(express.json());
+app.use(cookieParser());
 
 // routes
 app.get("/", (req, res) => {
