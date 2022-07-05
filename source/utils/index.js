@@ -11,6 +11,16 @@ export const connectToDB = () => {
 export const handleErrors = (err) => {
   let errors = {};
 
+  //incorrect email
+  if (err.message === "incorrect email") {
+    errors.email = "that email is not correct";
+  }
+
+  //incorrect password
+  if (err.message === "incorrect password") {
+    errors.email = "that password is not correct";
+  }
+
   //duplicate error code
   if (err.code === CONSTANTS.DUPLICATE_ERROR_CODE) {
     errors.email = "Email already exists, please use another email";
@@ -37,4 +47,8 @@ export const generateJWT = (id, email) => {
   return jwt.sign({ id, email }, process.env.JWT_SECRET, {
     expiresIn: CONSTANTS.JWT_MAX_AGE,
   });
+};
+
+export const comparePasswords = async (password1, password2) => {
+  return await bcrypt.compare(password1, password2);
 };

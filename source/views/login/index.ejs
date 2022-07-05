@@ -2,6 +2,7 @@
   <%- include("../partials/head.ejs") %>
 
   <body>
+    <%- include("../partials/nav.ejs") %>
     <div class="blogs content">
       <form action="/signup">
         <h2>Log in</h2>
@@ -32,14 +33,14 @@
         // get values
         const email = form.email.value;
         const password = form.password.value;
+
         try {
-          const res = await fetch("/signup", {
+          const res = await fetch("/login", {
             method: "POST",
             body: JSON.stringify({ email, password }),
             headers: { "Content-Type": "application/json" },
           });
           const data = await res.json();
-          console.log(data);
           if (data.errors) {
             emailError.textContent = data.errors.email;
             passwordError.textContent = data.errors.password;

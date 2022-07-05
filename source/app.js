@@ -6,6 +6,7 @@ import authRouts from "./routes/authentication.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { connectToDB } from "./utils/index.js";
+import { requireAuth, checkUser } from "./middleware/authMiddleware.js";
 
 const app = express();
 
@@ -33,6 +34,9 @@ app.use(express.urlencoded({ urlencoded: true, extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
+// get the user details on each get request
+app.get("*", checkUser);
+
 // routes
 app.get("/", (req, res) => {
   res.redirect("/blogs");
@@ -47,7 +51,7 @@ app.get("/about-us", (req, res) => {
 });
 
 // blog routes
-app.use("/blogs", blogRouts);
+app.use("/blogs", requireAuth, blogRouts);
 
 // auth routes
 app.use(authRouts);

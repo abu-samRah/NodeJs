@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import { hashPassword } from "../utils/index.js";
+import { hashPassword, comparePasswords } from "../utils/index.js";
 
 const Schema = mongoose.Schema;
 
@@ -31,9 +31,17 @@ userSchema.pre("save", async function (next) {
 
 // fire a function after doc saved to db
 userSchema.post("save", (doc, next) => {
-  console.log("new user was created", doc);
   next();
 });
+
+// static method to login user
+userSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (!user) throw Error("incorrect email");
+  const auth = await comparePasswords(password, user.password);
+  if (!auth) throw Error("incorrect password");
+  return user;
+};
 
 const User = mongoose.model("User", userSchema);
 
