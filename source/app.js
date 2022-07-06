@@ -15,7 +15,7 @@ dotenv.config();
 
 // connect to mongodb
 connectToDB()
-  .then(() => app.listen(3000))
+  .then(() => app.listen(process.env.PORT || 5000))
   .catch((err) => console.log(err));
 
 // register view engine
