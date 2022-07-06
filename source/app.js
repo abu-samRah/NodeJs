@@ -15,8 +15,18 @@ dotenv.config();
 
 // connect to mongodb
 connectToDB()
-  .then(app.listen(3000))
-  .catch((err) => console.log(err));
+  .then(() => {
+    console.log("######################################################");
+    console.log("success");
+    console.log("######################################################");
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log("******************************************************");
+    console.log("bad");
+    console.log(err);
+    console.log("******************************************************");
+  });
 
 // register view engine
 const __dirname = path.resolve();
