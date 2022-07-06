@@ -2,8 +2,11 @@ import express from "express";
 import path from "path";
 import morgan from "morgan";
 import blogRouts from "./routes/blog.js";
+import authRouts from "./routes/authentication.js";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import { connectToDB } from "./utils/index.js";
+import { requireAuth, checkUser } from "./middleware/authMiddleware.js";
 
 const app = express();
 
@@ -27,7 +30,12 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 
 // takes all the url encoded data and pass it to the req.body so we can use it
-app.use(express.urlencoded({ urlencoded: true }));
+app.use(express.urlencoded({ urlencoded: true, extended: false }));
+app.use(express.json());
+app.use(cookieParser());
+
+// get the user details on each get request
+app.get("*", checkUser);
 
 // routes
 app.get("/", (req, res) => {
@@ -43,7 +51,10 @@ app.get("/about-us", (req, res) => {
 });
 
 // blog routes
-app.use("/blogs", blogRouts);
+app.use("/blogs", requireAuth, blogRouts);
+
+// auth routes
+app.use(authRouts);
 
 // Express handle routes from top to the bottom
 // use function is a middleware that runs at every request weather its a get, post, delete, etc...
