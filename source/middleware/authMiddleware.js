@@ -1,20 +1,10 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
+import { verifyToken } from "../utils/index.js";
 
 export const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
-
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-      if (err) {
-        res.redirect("/login");
-      } else {
-        next();
-      }
-    });
-  } else {
-    res.redirect("/login");
-  }
+  verifyToken(token, next, () => res.redirect("/login"));
 };
 
 export const checkUser = (req, res, next) => {

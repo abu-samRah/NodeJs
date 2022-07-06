@@ -1,6 +1,6 @@
 import Blog from "../models/blog.js";
 
-export const blog_index = (req, res) => {
+export const blog_index = (_, res) => {
   Blog.find()
     .sort({ createdAt: -1 })
     .then((blogs) => res.render("blogs/index", { title: "All Blogs", blogs }))
@@ -13,10 +13,10 @@ export const blog_details = (req, res) => {
     .then((blog) =>
       res.render("blogs/details", { title: "Blog Details", blog })
     )
-    .catch((err) => res.status(404).render("404", { title: "Blog Not Found" }));
+    .catch(() => res.status(404).render("404", { title: "Blog Not Found" }));
 };
 
-export const blog_create_get = (req, res) => {
+export const blog_create_get = (_, res) => {
   res.render("blogs/create", { title: "create" });
 };
 
@@ -31,6 +31,6 @@ export const blog_create_post = (req, res) => {
 export const blog_delete = (req, res) => {
   const blogId = req.params.id;
   Blog.findByIdAndDelete(blogId)
-    .then((blog) => res.json({ redirect: "/blogs" }))
+    .then(() => res.json({ redirect: "/blogs" }))
     .catch((err) => console.log(err));
 };

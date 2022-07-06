@@ -1,21 +1,14 @@
 import CONSTANTS from "../constants/index.js";
 import User from "../models/user.js";
-import { handleErrors, generateJWT } from "../utils/index.js";
-import jwt from "jsonwebtoken";
+import { handleErrors, generateJWT, verifyToken } from "../utils/index.js";
 
 export const login_get = (req, res) => {
   const token = req.cookies.jwt;
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-      if (err) {
-        res.render("login/index", { title: "Login" });
-      } else {
-        res.redirect("/");
-      }
-    });
-  } else {
-    res.render("login/index", { title: "Login" });
-  }
+  verifyToken(
+    token,
+    () => res.redirect("/"),
+    () => res.render("login/index", { title: "Login" })
+  );
 };
 
 export const login_post = async (req, res) => {
@@ -37,17 +30,11 @@ export const login_post = async (req, res) => {
 
 export const signup_get = (req, res) => {
   const token = req.cookies.jwt;
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-      if (err) {
-        res.render("signup/index", { title: "Signup" });
-      } else {
-        res.redirect("/");
-      }
-    });
-  } else {
-    res.render("signup/index", { title: "Signup" });
-  }
+  verifyToken(
+    token,
+    () => res.redirect("/"),
+    () => res.render("signup/index", { title: "Signup" })
+  );
 };
 
 export const signup_post = async (req, res) => {

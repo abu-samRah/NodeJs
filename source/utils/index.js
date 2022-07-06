@@ -52,3 +52,17 @@ export const generateJWT = (id, email) => {
 export const comparePasswords = async (password1, password2) => {
   return await bcrypt.compare(password1, password2);
 };
+
+export const verifyToken = (token, onSuccess, onError) => {
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, (err, _) => {
+      if (err) {
+        onError();
+      } else {
+        onSuccess();
+      }
+    });
+  } else {
+    onError();
+  }
+};
