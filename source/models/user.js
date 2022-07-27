@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import { hashPassword, comparePasswords } from "../utils/index.js";
+import { hashPassword, comparePasswords } from "../helpers/user.js";
 
 const Schema = mongoose.Schema;
 
@@ -30,7 +30,7 @@ userSchema.pre("save", async function (next) {
 });
 
 // fire a function after doc saved to db
-userSchema.post("save", (doc, next) => {
+userSchema.post("save", function (doc, next) {
   next();
 });
 

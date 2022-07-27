@@ -1,12 +1,5 @@
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 import CONSTANTS from "../constants/index.js";
-
-export const connectToDB = () => {
-  const dbURI = process.env.DB_URI;
-  return mongoose.connect(dbURI);
-};
 
 export const handleErrors = (err) => {
   let errors = {};
@@ -37,22 +30,6 @@ export const handleErrors = (err) => {
   return errors;
 };
 
-export const hashPassword = async (password) => {
-  const salt = await bcrypt.genSalt();
-  const hashedPassword = await bcrypt.hash(password, salt);
-  return hashedPassword;
-};
-
-export const generateJWT = (id, email) => {
-  return jwt.sign({ id, email }, process.env.JWT_SECRET, {
-    expiresIn: CONSTANTS.JWT_MAX_AGE,
-  });
-};
-
-export const comparePasswords = async (password1, password2) => {
-  return await bcrypt.compare(password1, password2);
-};
-
 export const verifyToken = (token, onSuccess, onError) => {
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, _) => {
@@ -65,4 +42,10 @@ export const verifyToken = (token, onSuccess, onError) => {
   } else {
     onError();
   }
+};
+
+export const generateJWT = (id, email) => {
+  return jwt.sign({ id, email }, process.env.JWT_SECRET, {
+    expiresIn: CONSTANTS.JWT_MAX_AGE,
+  });
 };

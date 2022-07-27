@@ -1,8 +1,8 @@
 import CONSTANTS from "../constants/index.js";
 import User from "../models/user.js";
-import { handleErrors, generateJWT, verifyToken } from "../utils/index.js";
+import { handleErrors, generateJWT, verifyToken } from "../helpers/auth.js";
 
-export const login_get = (req, res) => {
+export const getLoginPage = (req, res) => {
   const token = req.cookies.jwt;
   verifyToken(
     token,
@@ -11,7 +11,7 @@ export const login_get = (req, res) => {
   );
 };
 
-export const login_post = async (req, res) => {
+export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -28,7 +28,7 @@ export const login_post = async (req, res) => {
   }
 };
 
-export const signup_get = (req, res) => {
+export const getSignupPage = (req, res) => {
   const token = req.cookies.jwt;
   verifyToken(
     token,
@@ -37,7 +37,7 @@ export const signup_get = (req, res) => {
   );
 };
 
-export const signup_post = async (req, res) => {
+export const signup = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -54,7 +54,7 @@ export const signup_post = async (req, res) => {
   }
 };
 
-export const logout_get = (req, res) => {
+export const logout = (_, res) => {
   res.cookie("jwt", "", { maxAge: 1 });
   res.redirect("/");
 };
